@@ -1,12 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 // Do not change the class name or package
@@ -16,11 +10,11 @@ public class Main {
 
 	public static long solve(long N, int W) {
 		long s = 0;
-		long prev =1;
+		long prev = 1;
 		for (long i = 1; i <= N - 2; i++) {
-			prev = (prev%MOD * 10)%MOD; 
+			prev = (prev % MOD * 10) % MOD;
 		}
-		s = ((prev % MOD) * ((9 - W) % MOD) % MOD);
+		s = ((prev % MOD) * ((9 - Math.abs(W)) % MOD) % MOD);
 		return s;
 	}
 
@@ -29,8 +23,11 @@ public class Main {
 		for (int t = 0; t < T; t++) {
 			long N = gl();
 			int W = gi();
-			if(W>=9){
-				W=9;
+			if (W >= 9) {
+				W = 9;
+			}
+			if (W <= -9) {
+				W = -9;
 			}
 			System.out.println(solve(N, W));
 		}

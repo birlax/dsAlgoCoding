@@ -5,33 +5,54 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 // Do not change the class name or package
 public class Main {
 
-	private static int solve(Map<Integer, Integer> count, Map<Integer, Integer> twice) {
+	private static int solve(int a[], Set<Integer> twice) {
 		int s = 0;
-		for (Map.Entry<Integer, Integer> outer : count.entrySet()) {
-			for (Map.Entry<Integer, Integer> inner : count.entrySet()) {
-				if (outer.getKey().intValue() == inner.getKey().intValue()) {
+		int i = 0;
+		int j = a.length - 1;
+		Arrays.sort(a);
+		for (Integer v : twice) {
+			i = 0;
+			j = a.length - 1;
+			while (i < j) {
+				if (a[i] + a[j] > v) {
+					--j;
 					continue;
 				}
-				if (twice.containsKey(outer.getKey() + inner.getKey())) {
-					s += outer.getValue() * inner.getValue();
+				if (a[i] + a[j] < v) {
+					++i;
+					continue;
 				}
-			}
-		}
-		s = s / 2;
-		for (Map.Entry<Integer, Integer> outer : count.entrySet()) {
-			if (outer.getValue() <= 1) {
-				continue;
-			} else {
-				s += (outer.getValue() * (outer.getValue() - 1)) / 2;
+				int ii = i;
+				int jj = j;
+
+				if (a[j] == a[i]) {
+					int p = j - i + 1;
+					s += (p * (p - 1)) / 2;
+					ii = jj;
+				} else {
+					ii = i;
+					jj = j;
+					while (ii < j && a[ii] == a[i]) {
+						ii++;
+					}
+					while (jj > i && a[jj] == a[j]) {
+						--jj;
+					}
+					s += (ii - i) * (j - jj);
+				}
+				i = ii;
+				j = jj;
 			}
 		}
 		return s;
@@ -41,15 +62,14 @@ public class Main {
 		int T = gi();
 		for (int t = 0; t < T; t++) {
 			int N = gi();
-			Map<Integer, Integer> count = new HashMap<>();
-			Map<Integer, Integer> twice = new HashMap<>();
+			int a[] = new int[N];
+			Set<Integer> twice = new HashSet<>();
 			for (int i = 0; i < N; i++) {
 				int v = gi();
-				count.putIfAbsent(v, 0);
-				count.put(v, count.get(v) + 1);
-				twice.put(2 * v, 0);
+				a[i] = v;
+				twice.add(2 * v);
 			}
-			System.out.println(solve(count, twice));
+			System.out.println(solve(a, twice));
 		}
 	}
 
