@@ -6,56 +6,21 @@ import java.util.StringTokenizer;
 // Do not change the class name or package
 public class Main {
 
-	private static long countStrictPrefixAGtBWithCarry(char[] a, long n) {
-		int diff = 0;
-		int i = 0;
-		long s = 0;
-		for (i = 0; i < a.length; i++) {
-			if (a[i] == 'a') {
-				diff++;
-			} else {
-				diff--;
-			}
-		}
-		long N = n;
-		if (diff > 0) {
-			n = Math.min(n, a.length / diff);
-		}
-		i = 0;
-		diff = 0;
-
-		while (n > 0) {
-			if (a[i] == 'a') {
-				diff++;
-			} else {
-				diff--;
-			}
-			if (diff >= 1) {
-				s++;
-			}
-			i++;
-			if (i == a.length) {
-				i = 0;
-				n--;
-				N--;
-				if (diff >= a.length) {
-					return s + N * a.length;
-				}
-				if (diff == 0) {
-					return s + N * s;
-				}
-			}
-		}
-		return s;
-	}
-
 	public static void main(String[] args) throws IOException {
 		int T = gi();
-		for (int i = 0; i < T; i++) {
-			String s = gs();
-			long n = gl();
-			System.out.println(countStrictPrefixAGtBWithCarry(s.toCharArray(), n));
+		for (int t = 0; t < T; t++) {
+			int N = gi();
+			int s = 100;
+			for (int i = 0; i < N; i++) {
+				s -= gi();
+			}
+			if ( s <= 0 && Math.abs(s) < N) {
+				System.out.println("YES");
+			} else {
+				System.out.println("NO");
+			}
 		}
+
 	}
 
 	public static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in), 32768);
